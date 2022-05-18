@@ -8,8 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.android.NavGraphs
-//import com.example.android.rickmorty.presentation.screens.NavGraphs
+import com.example.android.rickmorty.presentation.screens.NavGraphs
 import com.example.android.rickmorty.presentation.ui.theme.RickMortyTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint

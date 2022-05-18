@@ -16,9 +16,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.android.destinations.DetailScreenDestination
 import com.example.android.rickmorty.R
 import com.example.android.rickmorty.presentation.components.CharacterInfoItem
+import com.example.android.rickmorty.presentation.screens.destinations.DetailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
