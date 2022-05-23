@@ -6,8 +6,8 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.android.rickmorty.data.local.CharacterInfoDatabase
-import com.example.android.rickandmorty.data.local.entity.CharacterInfoRemoteKeysEntity
-import com.example.android.rickandmorty.data.local.entity.ResultInfoEntity
+import com.example.android.rickmorty.data.local.entity.CharacterInfoRemoteKeysEntity
+import com.example.android.rickmorty.data.local.entity.ResultInfoEntity
 import com.example.android.rickmorty.data.remote.RickAndMortyApi
 
 @OptIn(ExperimentalPagingApi::class)

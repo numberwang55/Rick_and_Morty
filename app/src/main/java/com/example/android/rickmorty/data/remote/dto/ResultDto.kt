@@ -1,5 +1,6 @@
-package com.example.android.rickandmorty.data.remote.dto
+package com.example.android.rickmorty.data.remote.dto
 
+import com.example.android.rickmorty.data.local.entity.ResultInfoEntity
 import com.example.android.rickmorty.domain.model.ResultInfo
 
 data class ResultDto(
@@ -16,6 +17,22 @@ data class ResultDto(
     val type: String,
     val url: String
 ) {
+    fun toResultInfoEntity(): ResultInfoEntity {
+        return ResultInfoEntity(
+            created = created,
+            episode = episode,
+            gender = gender,
+            id = id,
+            image = image,
+            location = location.toLocation(),
+            characterName = name,
+            origin = origin.toOrigin(),
+            species = species,
+            status = status,
+            type = type,
+            characterUrl = url
+        )
+    }
     fun toResult(): ResultInfo {
         return ResultInfo(
             created = created,

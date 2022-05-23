@@ -3,21 +3,30 @@ package com.example.android.rickmorty.presentation.screens.character_screen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.filter
+import coil.compose.AsyncImage
 import com.example.android.rickmorty.R
+import com.example.android.rickmorty.domain.model.ResultInfo
 import com.example.android.rickmorty.presentation.components.CharacterInfoItem
+import com.example.android.rickmorty.presentation.components.CharacterInfoRow
 import com.example.android.rickmorty.presentation.screens.destinations.DetailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -30,10 +39,12 @@ fun CharacterInfoScreen(
     viewModel: CharacterInfoViewModel = hiltViewModel()
 ) {
     val getCharInfo = viewModel.getAllCharacterInfo.collectAsLazyPagingItems()
+    val state = viewModel.state
+    val searchedCharacter = viewModel.searchedImages.collectAsLazyPagingItems()
 
     Scaffold(backgroundColor = Color.Black.copy(alpha = 0.5f)) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             Image(
                 painter = painterResource(
@@ -42,26 +53,54 @@ fun CharacterInfoScreen(
                 contentDescription = "logo",
                 modifier = Modifier.background(Color.Black)
             )
+            OutlinedTextField(
+                value = viewModel.searchQuery.value,
+                onValueChange = { newQuery ->
+                    viewModel.updateSearchQuery(newQuery)
+                },
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        viewModel.searchCharacter()
+                    }
+                ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Search
+                )
+            )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
             ) {
-                items(getCharInfo.itemCount) { i ->
-                    Column(Modifier.padding(8.dp)) {
-                        CharacterInfoItem(
-                            entry = getCharInfo[i]!!,
-                            onPokemonClick = { id ->
-                                navigator.navigate(DetailScreenDestination(id))
+                if (viewModel.searchQuery.value.isNotEmpty()) {
+                    items(searchedCharacter.itemCount) { i ->
+                        Column(Modifier.padding(8.dp)) {
+                            searchedCharacter[i]?.let {
+                                CharacterInfoItem(
+                                    entry = it,
+                                    onPokemonClick = { id ->
+                                        navigator.navigate(DetailScreenDestination(id))
+                                    }
+                                )
                             }
-                        )
+                        }
+                    }
+                } else {
+                    items(getCharInfo.itemCount) { i ->
+                        Column(Modifier.padding(8.dp)) {
+                            getCharInfo[i]?.let { resultInfo ->
+                                CharacterInfoItem(
+                                    entry = resultInfo,
+                                    onPokemonClick = { id ->
+                                        navigator.navigate(DetailScreenDestination(id))
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }
-        }
-    }
-}
 
 //            LazyColumn() {
-//                val itemCount = if (getCharInfo.itemCount % 2 == 0){
+//                val itemCount = if (getCharInfo.itemCount % 2 == 0) {
 //                    getCharInfo.itemCount / 2
 //                } else {
 //                    getCharInfo.itemCount / 2 + 1
@@ -76,6 +115,9 @@ fun CharacterInfoScreen(
 //                    )
 //                }
 //            }
+        }
+    }
+}
 
 //    val state = viewModel.state
 //    val lazyListScrollState = rememberLazyGridState()

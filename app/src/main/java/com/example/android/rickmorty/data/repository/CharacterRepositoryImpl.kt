@@ -3,6 +3,7 @@ package com.example.android.rickmorty.data.repository
 import androidx.paging.*
 import com.example.android.rickmorty.data.local.CharacterInfoDatabase
 import com.example.android.rickmorty.data.paging.RickAndMortyRemoteMediator
+import com.example.android.rickmorty.data.paging.SearchPagingSource
 import com.example.android.rickmorty.data.remote.RickAndMortyApi
 import com.example.android.rickmorty.domain.model.ResultInfo
 import com.example.android.rickmorty.domain.repository.CharacterRepository
@@ -32,7 +33,7 @@ class CharacterRepositoryImpl @Inject constructor(
         ).flow
             .map { pagingData ->
                 pagingData.map { resultInfoEntity ->
-                    resultInfoEntity.toResult()
+                    resultInfoEntity.toResultInfo()
                 }
             }
     }
@@ -40,9 +41,19 @@ class CharacterRepositoryImpl @Inject constructor(
     override suspend fun getCharacterDetailById(id: Int): Resource<ResultInfo> {
         return try {
             val response = db.resultInfoDao.getResultInfoById(id = id)
-            Resource.Success(response.toResult())
+            Resource.Success(response.toResultInfo())
         } catch (e: Exception) {
             Resource.Error(message = e.message ?: "Error")
         }
+    }
+
+    override suspend fun searchCharacter(name: String): Flow<PagingData<ResultInfo>> {
+        return Pager(
+            config = PagingConfig(pageSize = ITEMS_PER_PAGE),
+            pagingSourceFactory = { SearchPagingSource(api, name) }
+        ).flow
+            .map { pagingData->
+                pagingData.map { it.toResultInfo() }
+            }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.android.rickandmorty.data.local.entity
+package com.example.android.rickmorty.data.local.entity
 
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -40,7 +40,7 @@ data class ResultInfoEntity(
     val type: String,
     val characterUrl: String
 ) {
-    fun toResult(): ResultInfo {
+    fun toResultInfo(): ResultInfo {
         return ResultInfo(
             created = created,
             episode = episode,

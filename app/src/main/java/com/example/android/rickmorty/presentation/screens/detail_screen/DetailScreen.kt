@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -64,7 +65,7 @@ fun DetailScreen(
                                 }
                                 Text(text = "Origin: ${state.origin.originName.capitalize()}")
                                 Text(
-                                    text = "Location: ${state.location.locationName}",
+                                    text = "Location: ${state.location.locationName.capitalize()}",
                                 )
                             }
                         }

@@ -1,4 +1,4 @@
-package com.example.android.rickandmorty.data.remote.dto
+package com.example.android.rickmorty.data.remote.dto
 
 import com.example.android.rickmorty.domain.model.Origin
 

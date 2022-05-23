@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.android.rickandmorty.data.local.entity.CharacterInfoRemoteKeysEntity
+import com.example.android.rickmorty.data.local.entity.CharacterInfoRemoteKeysEntity
 
 @Dao
 interface CharacterInfoRemoteKeysDao {
